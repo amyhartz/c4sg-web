@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../common/project.service';
 import { Project } from '../common/project';
 import { User } from '../../user/common/user';
-import { JobTitle } from '../../job-title';
+import { JobTitle } from '../../_components/job-title/job-title';
 import { Organization } from '../../organization/common/organization';
 import { UserService } from '../../user/common/user.service';
 import { OrganizationService } from '../../organization/common/organization.service';
@@ -114,7 +114,7 @@ export class ProjectEditComponent implements OnInit, AfterViewChecked {
           .subscribe(
             res => {
               let projects: Project[];
-              projects = res.json();
+              projects = res;
               projects.forEach((e: Project) => {
                 this.projectId = e.id.toString();
                 this.project = e;
@@ -323,7 +323,7 @@ export class ProjectEditComponent implements OnInit, AfterViewChecked {
     upload$.switchMap( (res) => this.projectService.saveProjectImg(this.project.id, res),
       (outerValue, innerValue, outerIndex, innerIndex) => ({outerValue, innerValue, outerIndex, innerIndex}))
       .subscribe(res => {
-        if (res.innerValue.text() === '') {
+        if (res.innerValue.status === 200) {
             this.imageUrl = res.outerValue;
             this.project.imageUrl = this.imageUrl;
         } else {

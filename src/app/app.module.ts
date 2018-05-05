@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import {HttpModule, JsonpModule} from '@angular/http';
+import {HttpClientModule } from '@angular/common/http';
 import {NavScrollDirective} from './navscroll.directive';
 
 import {MaterializeModule} from 'angular2-materialize';
@@ -44,6 +44,8 @@ import {UserListComponent} from './user/list/user-list.component';
 import {UserViewComponent} from './user/view/user-view.component';
 import {UserEditComponent} from './user/edit/user-edit.component';
 
+import {JobTitleComponent} from './_components/job-title/job-title.component';
+
 import {AuthRoleSelectionComponent} from './auth.role.component';
 
 import {SharedBtnComponent} from './_components/shared-btn/shared-btn.component';
@@ -52,6 +54,7 @@ import {SkillSelectComponent} from './_components/select-skill/skill-select.comp
 import {OrganizationService} from './organization/common/organization.service';
 import {ProjectService} from './project/common/project.service';
 import {UserService} from './user/common/user.service';
+import {StoryService} from './stories/common/story.service';
 import {SkillService} from './skill/common/skill.service';
 import {ApplicationService} from './application/common/application.service';
 import {AuthService} from './auth.service';
@@ -74,17 +77,12 @@ import { UserAvatarComponent } from './_components/user-avatar/user-avatar.compo
 import { UserAvatarSmallComponent } from './_components/user-avatar-small/user-avatar-small.component';
 import { UserAvatarHeaderComponent } from './_components/user-avatar-header/user-avatar-header.component';
 import {MyPaginationControlsComponent} from './_components/my-pagination-controls/my-pagination-controls.component';
-import { Http, RequestOptions } from '@angular/http';
 import {AuthHttp, AuthConfig} from 'angular2-jwt';
 import { InputFormatterDirective } from './project/common/input.formatter.directive';
 import { ProjectImageComponent } from './project/common/project-image.component';
 import { TagsComponent } from './_components/tags/tags.component';
+import { StoryViewComponent } from './stories/story-view/story-view.component';
 
-export function authHttpServiceFactory(http: Http, options: RequestOptions) {
-  return new AuthHttp(new AuthConfig({
-    tokenGetter: (() => localStorage.getItem('access_token'))
-  }), http, options);
-}
 
 @NgModule({
   imports: [
@@ -92,10 +90,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
+    HttpClientModule,
     AppRoutingModule,
     MaterializeModule,
-    JsonpModule,
     NgxPaginationModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAq8AkZC-7OkXqM7bLjJ5OQQNDn1hW92o0'
@@ -134,6 +131,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     UserViewComponent,
     UserEditComponent,
 
+    JobTitleComponent,
+
     AuthRoleSelectionComponent,
     SkillSelectComponent,
     SharedBtnComponent,
@@ -147,12 +146,14 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     MyPaginationControlsComponent,
     InputFormatterDirective,
     ProjectImageComponent,
-    TagsComponent
+    TagsComponent,
+    StoryViewComponent
   ],
   providers: [
     ProjectService,
     OrganizationService,
     UserService,
+    StoryService,
     FormConstantsService,
     AuthService,
     AuthGuard,
@@ -164,12 +165,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     SkillService,
     ApplicationService,
     ExtFileHandlerService,
-    EmailService,
-    {
-      provide: AuthHttp,
-      useFactory: authHttpServiceFactory,
-      deps: [Http, RequestOptions]
-    }],
+    EmailService
+  ],
 
   bootstrap: [AppComponent]
 })
